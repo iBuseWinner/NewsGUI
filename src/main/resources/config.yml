@@ -1,0 +1,35 @@
+mysql:
+  host: 'localhost'
+  port: 3306
+  database: 'news'
+#  args: '?autoReconnect=true'
+  user: 'root'
+  password: ''
+
+gui:
+  title: '&cНовости сервера'
+  size: 27
+  style:
+    news-type:
+      important:
+        type-name: '&cВажное'
+        material: 'book'
+        amount: 1
+        model-data: 0
+      update:
+        type-name: '&aОбновление'
+        material: 'paper'
+        amount: 1
+        model-data: 0
+      notify:
+        type-name: '&bУведомление'
+        material: 'barrier'
+        amount: 1
+        model-data: 0
+    item:
+      name: 'Статья №$news-id$'
+      lore:
+        - '&0'
+        - '$text$' #Количество строк вы изменяете сами, кек
+        - '&1'
+        - '&eДата публикации записи: &6$news-date-formatted$'

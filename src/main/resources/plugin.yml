@@ -1,0 +1,12 @@
+name: NewsGUI
+version: '${project.version}'
+main: ru.ibusewinner.fundaily.newsgui.NewsGUI
+api-version: 1.16
+depend: [ BuseAPI ]
+authors: [ iBuseWinner ]
+description: Free news plugin for FunDaily
+website: https://vk.com/buse_page
+
+commands:
+  news:
+    description: News command.
