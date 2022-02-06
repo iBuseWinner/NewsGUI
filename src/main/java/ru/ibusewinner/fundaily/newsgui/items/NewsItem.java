@@ -101,10 +101,6 @@ public class NewsItem {
         this.date = date;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public void setNewsType(NewsType newsType) {
         this.newsType = newsType;
     }

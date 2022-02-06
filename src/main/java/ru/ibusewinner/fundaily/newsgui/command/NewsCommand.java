@@ -27,11 +27,11 @@ public class NewsCommand extends ICommand {
                 commandSender.sendMessage(BuseAPI.getMessageManager().convertMessage("&aКоманды: /news <create/publish/delete/text/title/author/type>"));
                 commandSender.sendMessage("Всё блин понятно!");
             } else {
-                NewsGUI.getGuiapi().openGUI((Player) commandSender, new NewsMenu(NewsGUI.getInstance()));
+                NewsGUI.getGuiapi().openGUI((Player) commandSender, new NewsMenu(NewsGUI.getInstance(), (Player) commandSender));
             }
         } else {
             if (args[0].equalsIgnoreCase("open")) {
-                NewsGUI.getGuiapi().openGUI((Player) commandSender, new NewsMenu(NewsGUI.getInstance()));
+                NewsGUI.getGuiapi().openGUI((Player) commandSender, new NewsMenu(NewsGUI.getInstance(), (Player) commandSender));
             } else {
                 if (commandSender.hasPermission("news.admin")) {
                     if (args[0].equalsIgnoreCase("create")) {
@@ -48,7 +48,7 @@ public class NewsCommand extends ICommand {
                             switch (args[0].toLowerCase()) {
                                 case "publish":
                                     newsItem.setPublished(true);
-                                    NewsGUI.getMySQL().updateNew(newsItem);
+                                    NewsGUI.getMySQL().updateNews(newsItem);
                                     commandSender.sendMessage(BuseAPI.getMessageManager().convertMessage("&aСтатья №"+id+" опубликована!"));
                                     break;
                                 case "delete":
@@ -63,7 +63,7 @@ public class NewsCommand extends ICommand {
                                     String text = sb.toString();
                                     List<String> textLore = new ArrayList<>(Arrays.asList(text.split("\\|\\|")));
                                     newsItem.setTextLore(textLore);
-                                    NewsGUI.getMySQL().updateNew(newsItem);
+                                    NewsGUI.getMySQL().updateNews(newsItem);
                                     commandSender.sendMessage(BuseAPI.getMessageManager().convertMessage("&aТекст обновлён!"));
                                     break;
                                 case "title":
@@ -73,7 +73,7 @@ public class NewsCommand extends ICommand {
                                     }
                                     String title = sb.toString();
                                     newsItem.setTitle(title);
-                                    NewsGUI.getMySQL().updateNew(newsItem);
+                                    NewsGUI.getMySQL().updateNews(newsItem);
                                     commandSender.sendMessage(BuseAPI.getMessageManager().convertMessage("&aЗаголовок обновлён!"));
                                     break;
                                 case "author":
@@ -83,7 +83,7 @@ public class NewsCommand extends ICommand {
                                     }
                                     String author = sb.toString();
                                     newsItem.setAuthor(author);
-                                    NewsGUI.getMySQL().updateNew(newsItem);
+                                    NewsGUI.getMySQL().updateNews(newsItem);
                                     commandSender.sendMessage(BuseAPI.getMessageManager().convertMessage("&aАвтор обновлён!"));
                                     break;
                                 case "type":
@@ -93,8 +93,19 @@ public class NewsCommand extends ICommand {
                                         return;
                                     }
                                     newsItem.setNewsType(newsType);
-                                    NewsGUI.getMySQL().updateNew(newsItem);
+                                    NewsGUI.getMySQL().updateNews(newsItem);
                                     commandSender.sendMessage(BuseAPI.getMessageManager().convertMessage("&aТип новости обновлён!"));
+                                    break;
+                                case "date":
+                                    try {
+                                        long parse = Long.parseLong(args[2]);
+                                        newsItem.setDate(parse);
+                                        commandSender.sendMessage(BuseAPI.getMessageManager().convertMessage("&aВы изменили дату новости!"));
+                                    } catch (NumberFormatException e) {
+                                        newsItem.setDate(System.currentTimeMillis());
+                                        commandSender.sendMessage(BuseAPI.getMessageManager().convertMessage("&aДата новости установлена на текущую!"));
+                                    }
+                                    NewsGUI.getMySQL().updateNews(newsItem);
                                     break;
                                 default:
                                     commandSender.sendMessage(BuseAPI.getMessageManager().convertMessage("&cНеизвестная команда!"));
@@ -104,11 +115,6 @@ public class NewsCommand extends ICommand {
                             commandSender.sendMessage(BuseAPI.getMessageManager().convertMessage("&cВ аргументе принимается только целое число - айди записи!"));
                         }
                     }
-//                    } else if (args[0].equalsIgnoreCase("publish")) {
-//                        //ToDo publishing a new
-//                    } else if (args[0].equalsIgnoreCase("delete")) {
-//
-//                    }
                 }
             }
         }
@@ -118,7 +124,7 @@ public class NewsCommand extends ICommand {
     public List<String> complete(CommandSender commandSender, String[] args) {
         if (commandSender.hasPermission("news.admin")) {
             if (args.length == 1) {
-                return Lists.newArrayList("create", "publish", "delete", "text", "title", "author", "type");
+                return Lists.newArrayList("create", "publish", "delete", "text", "title", "author", "type", "date");
             } else if (args.length == 2) {
                 return Lists.newArrayList("Айди записи");
             }

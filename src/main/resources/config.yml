@@ -6,6 +6,8 @@ mysql:
   user: 'root'
   password: ''
 
+has-not-read-news: '&fУ тебя есть непрочитанные записи!\n&fТы можешь посмотреть их командой &a/news&f!'
+
 gui:
   title: '&cНовости сервера'
   size: 27
@@ -29,7 +31,7 @@ gui:
         amount: 1
         model-data: 0
     item:
-      name: '$is-new$Статья №$news-id$'
+      name: '$news-is-new$Статья №$news-id$'
       lore:
         - '&0'
         - '$text$' #Количество строк вы изменяете сами, кек

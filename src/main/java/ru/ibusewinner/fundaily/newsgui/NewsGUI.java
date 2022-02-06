@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ru.ibusewinner.fundaily.newsgui.command.NewsCommand;
 import ru.ibusewinner.fundaily.newsgui.items.NewsItem;
 import ru.ibusewinner.fundaily.newsgui.items.NewsType;
+import ru.ibusewinner.fundaily.newsgui.items.NewsUser;
 import ru.ibusewinner.fundaily.newsgui.utils.NewsMySQL;
 import ru.ibusewinner.fundaily.newsgui.utils.UpdateNewsRunnable;
 import ru.ibusewinner.plugin.buseapi.BuseAPI;
@@ -23,8 +24,9 @@ public final class NewsGUI extends JavaPlugin {
     private static ConfigManager config;
     private static NewsMySQL mySQL;
     private static GUIAPI<NewsGUI> guiapi;
-    private static List<NewsItem> newsItems;
-    private static List<NewsType> newsTypes;
+    private static List<NewsItem> newsItems = new ArrayList<>();
+    private static List<NewsType> newsTypes = new ArrayList<>();
+    private static List<NewsUser> cachedUsers = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -40,8 +42,6 @@ public final class NewsGUI extends JavaPlugin {
         mySQL.createTables();
 
         guiapi = new GUIAPI<>(this);
-        newsItems = new ArrayList<>();
-        newsTypes = new ArrayList<>();
         addAllTypes();
 
         new NewsCommand(this, "news");
@@ -65,6 +65,19 @@ public final class NewsGUI extends JavaPlugin {
             NewsType newsType = new NewsType(type, typeName, material, amount, modelData);
             newsTypes.add(newsType);
         }
+    }
+
+    public static List<NewsUser> getCachedUsers() {
+        return cachedUsers;
+    }
+
+    public static NewsUser getCachedUserByNickname(String nickname) {
+        for (NewsUser newsUser : cachedUsers) {
+            if (newsUser.getNickname().equals(nickname)) {
+                return newsUser;
+            }
+        }
+        return null;
     }
 
     public static NewsItem getNewsItemById(long id) {

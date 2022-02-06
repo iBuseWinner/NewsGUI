@@ -7,6 +7,6 @@ public class UpdateNewsRunnable extends BukkitRunnable {
     @Override
     public void run() {
         NewsGUI.getNewsItems().clear();
-        NewsGUI.getMySQL().updateNews();
+        NewsGUI.getMySQL().updateAllNews();
     }
 }
