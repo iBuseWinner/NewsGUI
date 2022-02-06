@@ -32,7 +32,6 @@ public class NewsMenu extends GUI<NewsGUI> {
 
             if (newsItem.isPublished()) {
                 set(slot, itemStack);
-
                 slot++;
             }
         }

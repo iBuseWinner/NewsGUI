@@ -86,7 +86,7 @@ public final class NewsGUI extends JavaPlugin {
     }
 
     public static String formatDate(long date) {
-        return new SimpleDateFormat("HH:mm:ss.sss dd.MM.yy").format(date);
+        return new SimpleDateFormat(getConfigManager().getConfig().getString("gui.date-format")).format(date);
     }
 
     public static ConfigManager getConfigManager() {

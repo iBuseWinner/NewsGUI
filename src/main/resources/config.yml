@@ -9,7 +9,9 @@ mysql:
 gui:
   title: '&cНовости сервера'
   size: 27
+  date-format: 'HH:mm dd.MM.yy'
   style:
+    new: '&cНОВОЕ! '
     news-type:
       important:
         type-name: '&cВажное'
@@ -27,7 +29,7 @@ gui:
         amount: 1
         model-data: 0
     item:
-      name: 'Статья №$news-id$'
+      name: '$is-new$Статья №$news-id$'
       lore:
         - '&0'
         - '$text$' #Количество строк вы изменяете сами, кек
